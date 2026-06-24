@@ -1,0 +1,60 @@
+\documentclass[11pt]{scrartcl}
+\usepackage[sexy]{evan}
+\usepackage{answers}
+
+\begin{document}
+\title{Functional Equations Solutions}
+\author{Prakrit Gajurel}
+\date{24 June 2026}
+\maketitle
+
+\section{Walkthrough Problems}
+
+\begin{problem}
+    [USAMO 2002]
+    Determine all functions $f: \mathbb{R} \rightarrow \mathbb{R}$ such that
+    \[
+    f(x^2-y^2) = xf(x) - yf(y)
+    \]
+    for all pairs of real numbers $x$ and $y$.
+    
+\end{problem}
+
+\begin{proof}
+    Let $P(x, y)$ denote the given assertion. Note that $P(0,0)$ gives us $f(0)=0$. Then,
+    \begin{align*}
+        P(x, -x) \Longrightarrow &f(x^2-x^2) = xf(x) + xf(-x)
+        \\& 0 = x(f(x)+f(-x))
+    \end{align*}
+    For nonzero $x$, we have $f(-x) = -f(x)$, but when $x=0$ we have $f(0)=0$ anyway, so we have $f$ is odd for all real numbers $x$.
+    \[
+    P(x,0) \Longrightarrow f(x^2) = xf(x)
+    \]
+    So now we can rewrite the original condition as:
+    \[
+    f(x^2 - y^2) = f(x^2) - f(y^2)
+    \]
+    We let $a = x^2$, and $b = y^2$ such that, for nonnegative $a$, $b$ we have:
+    \[
+    f(a-b) = f(a) - f(b)
+    \]
+    Again, we can set $a=x_0 + y_0$ and $b=y_0$ to get:
+    \[
+    f(x_0+y_0-y_0) = f(x_0+y_0) - f(y_0) \implies f(x_0 + y_0) = f(x_0) + f(y_0)
+    \]
+    for nonnegative $x_0$, $y_0$. However, since $f$ is odd, we get that $f$ is additive on the negatives too.
+
+    Finally, we let $x=a+b$ in one of the previous equations $f(x^2) = xf(x)$ to get:
+    \[
+    f(a^2 + 2ab + b^2) = (a+b)(f(a) + f(b))
+    \]
+    \[
+      f(2ab) = af(b) + bf(a)
+    \]
+    \[
+      a = 1 \implies f(2b) = f(b) + f(1)b = 2f(b)
+    \]
+    Which gives $f(x) = cx$ for all $x$, which upon checking works.
+\end{proof}
+
+\end{document}
