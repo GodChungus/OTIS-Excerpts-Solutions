@@ -62,7 +62,27 @@ a^4b + b^4c + c^4d + d^4a \ge a + b + c + d.
 \end{problem}
 
 \begin{proof}
-  
+  We begin by rewriting.
+  \[
+  \sum_{\text{cyc}} \frac{1}{(2a+b+c)^2} \le \frac{3}{16}
+  \]
+  \[
+  \sum_{\text{cyc}} \frac{16}{(2a+b+c)^2} \le 3
+  \]
+  \[
+  \sum_{\text{cyc}} \frac{1}{a(a+b+c)} = 1 \implies \sum_{\text{cyc}} \left( \frac{16}{(2a+b+c)^2} - \frac{3}{a(a+b+c)} \right) \le 0
+  \]
+  Which means the inequality is homogenized. WLOG let $a + b + c = 3$, then we have
+  \[
+  \sum_{\text{cyc}} \left( \frac{16}{(3+a)^2} - \frac1a \right) \le 0
+  \]
+  \[
+  \text{Define } f(x) = \frac{16}{(x+3)^2} - \frac1x \text{ then compute } f''(x) = \frac{96}{(x+3)^4} - \frac{2}{x^3}.
+  \]
+  Note that $f$ is concave on $[0, 3]$. Therefore, by Jensen,
+  \[
+  \frac{f(a) + f(b) + f(c)}{3} \le 3f\left(\frac{a+b+c}{3}\right) = 3f(1) = 0 \implies \boxed{f(a) + f(b) + f(c) \le 0}.
+  \]
 \end{proof}
 
 \section{Problems}
