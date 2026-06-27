@@ -5,7 +5,7 @@
 \begin{document}
 \title{Functional Equations Solutions}
 \author{Prakrit Gajurel}
-\date{26 June 2026}
+\date{27 June 2026}
 \maketitle
 
 \section{Walkthrough Problems}
@@ -76,7 +76,54 @@
   \[
   P\left(z, \frac{z}{z-1}\right) \Longrightarrow f\left(f(z)f\left(\frac{z}{z-1}\right)\right) = 0
   \]
-  giving $f(0)=0$, which is a contradiction, giving $z=f(0)^2=1 \implies f(0) = \pm 1$.
+  giving $f(0)=0$, which is a contradiction, giving $z=f(0)^2=1 \implies f(0) = \pm 1$. One can now take
+  $P(1,x)$ to give $f(x+1) = f(x)-1$, then $P(x,0)$ to get $f(f(x)) = 1-f(x)$. Applying $f$ on this equation and equating
+  some terms gives us:
+  \[
+  f(f(f(x))) = f(1-f(x)) = 1-f(f(x)) = f(x)
+  \]
+  Before we move on, I'd like to prove something that would help us in our final claim.
+  \begin{claim}
+    For sufficiently large $N_1$ and $N_2$, we can find $x$, $y$ satisfying $x+y = N_1 + 1$ and $xy = N_2$.
+  \end{claim}
+  \begin{proof}
+    First we observe that we can think of $x$, $y$ as roots of some quadratic equation. Of course, comparing it with Vieta's gives us that
+    $x$ and $y$ are possible roots of the equation
+    \[
+    x_0^2 - (N_1 + 1)x_0 + N_2 = 0
+    \]
+    Obviously distinct solutions $x$, $y$ to this equation exist if and only if the discriminant, $\Delta$ is greater than zero. So we have:
+    \begin{align*}
+    \Delta &= (N_1+1)^2 - 4N_2 \\
+    &= N_1^2 + 2N_1 + 1 - 4N_2 > 0
+    \end{align*}
+    So we can just pick sufficiently large $N_1$, $N_2$ that satisfies the condition(or maybe something like $N_1^2 \ge 4N_2$) so we have 
+    solutions for $x, y$.
+  \end{proof}
+
+  Now, we prove the final claim.
+
+  \begin{claim}
+    $f$ is injective.
+  \end{claim}
+  \begin{proof}
+    Assume for some sufficiently large $a$, $b$, we have $f(a) = f(b)$ and also, $x+y = a+1$ and $xy = b$(from the above claim, we can do this).
+    Then, the original assertion gives us
+    \begin{align*}
+      f(f(x)f(y)) &= f(b) - f(a+1) \\
+      &= f(b) - (f(a) - 1) \\
+      &= 1
+    \end{align*}
+    Shifting $f$ we get that $f(f(x)f(y)+1) = 0 \implies f(x)f(y) + 1 = 1$ so $f(x)f(y) = 0$, giving that $1 \in \left\{ x, y \right\}$. However,
+    we are done as if $x=1$ we get $y+1=a+1 \implies y=a$ and $xy=b \implies b=y=a$. This follows similarly for $y=1$, and so $f$ is injective.
+  \end{proof}
+
+  From the injectivity, and our earlier calculations we get $f(1-f(x)) = f(x) \implies f(x) = 1-x$ and since $-f$ must be a solution too, 
+  $f(x) = x-1$ is another solution. Therefore, our solutions are:
+
+  \[
+  \boxed{f(x) = 0, 1-x, x-1}
+  \]
 \end{proof}
 
 \end{document}
