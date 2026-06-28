@@ -5,7 +5,7 @@
 \begin{document}
 \title{Functional Equations Solutions}
 \author{Prakrit Gajurel}
-\date{27 June 2026}
+\date{28 June 2026}
 \maketitle
 
 \section{Walkthrough Problems}
@@ -124,6 +124,53 @@
   \[
   \boxed{f(x) = 0, 1-x, x-1}
   \]
+\end{proof}
+
+\begin{problem}
+  [USAMO 2018]
+  Find all functions $f: (0, \infty) \rightarrow (0, \infty)$ such that
+  \[
+  f\left( x + \frac 1y \right) + f\left( y + \frac 1z \right) + f\left( z + \frac 1x \right) = 1
+  \]
+  for all $x$, $y$, $z > 0$ with $xyz = 1$.
+\end{problem}
+
+\begin{proof}
+  We begin by substituting the values $x=\frac ab$, $y=\frac bc$, $z=\frac ca$ to get the following:
+  \[
+  \sum_{\text{cyc}} f\left( \frac{a+c}{b} \right) = 1
+  \]
+  We then provide another substitution, this time for the function. Define a function $g: (0, 1) \rightarrow (0, 1)$ such that
+  $g(x) = f(\frac{1-x}{x})$, then for $a + b + c = 1$ it follows that
+  \[
+  g(a) + g(b) + g(c) = 1
+  \]
+  \begin{claim}
+    $g$ satisfies Jensen's functional equation over $(0, \frac 12)$.
+    \begin{proof}
+      Define variables $x$, $y \in (0, \frac 12)$ such that $\frac{x+y}{2} \in (0, \frac 12) \subset (0, 1)$ and also $0 < x+y < 1$.
+      Therefore, we can make the following substitutions:
+      \[
+      a = b = \frac{x+y}{2}
+      \]
+      \[
+      c = 1-(x+y)
+      \]
+      Which satisfy $a+b+c=1$, then,
+      \[
+      g\left( \frac{x+y}{2} \right) + g\left( \frac{x+y}{2} \right) + g(1-(x+y)) = 1
+      \]
+      and
+      \[
+      g\left( x \right) + g\left( y \right) + g(1-(x+y)) = 1
+      \]
+      Give us that
+      \[
+      g(x) + g(y) = 2g\left( \frac{x+y}{2} \right),
+      \]
+      as desired.
+    \end{proof}
+  \end{claim}
 \end{proof}
 
 \end{document}
