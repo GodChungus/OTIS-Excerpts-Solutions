@@ -5,7 +5,7 @@
 \begin{document}
 \title{Functional Equations Solutions}
 \author{Prakrit Gajurel}
-\date{28 June 2026}
+\date{2 July 2026}
 \maketitle
 
 \section{Walkthrough Problems}
@@ -171,6 +171,17 @@
       as desired.
     \end{proof}
   \end{claim}
+  We now define a new function $h: [0, 1] \rightarrow \mathbb{R}$ as:
+  \[
+  h(t) = g \left( \frac{2t+1}{8} \right) - (1-t) g\left( \frac 18\right) - tg\left( \frac 38 \right)
+  \]
+  Notice that $h(0) = h(1) = 0$. Also,
+  \begin{align*}
+    h\left( \frac 12 \right) &= g \left( \frac 28 \right) - \frac 12 g\left( \frac 18 \right) - \frac 12 \left( \frac 38 \right) \\
+    &= g \left( \frac 18 \right) + g \left( \frac 18 \right) - \frac 12 g \left( \frac 18 \right) - \frac 12 g \left( \frac 18 \right) - \frac 12 g \left( \frac 18 \right) \\
+    &= 0
+  \end{align*}
+  So now we have $h(0) = h(1) = h(\frac 12) = 0$.
 \end{proof}
 
 \end{document}
