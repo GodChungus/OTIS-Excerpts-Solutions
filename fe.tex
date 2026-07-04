@@ -5,7 +5,7 @@
 \begin{document}
 \title{Functional Equations Solutions}
 \author{Prakrit Gajurel}
-\date{2 July 2026}
+\date{4 July 2026}
 \maketitle
 
 \section{Walkthrough Problems}
@@ -182,6 +182,33 @@
     &= 0
   \end{align*}
   So now we have $h(0) = h(1) = h(\frac 12) = 0$.
+\end{proof}
+
+\newpage{}
+
+\section{Problems}
+
+\begin{problem}
+  [IMO 2008]
+  Find all functions $f$ from the positive reals to the positive reals such that
+  \[
+  \frac{f(w)^2 + f(x)^2}{f(y^2) + f(z^2)} = \frac{w^2 + x^2}{y^2 + z^2}
+  \]
+  for all positive real numbers $w$, $x$, $y$, $z$ satisfying $wx=yz$.
+\end{problem}
+
+\begin{proof}
+  We let $P(w, x, y, z)$ represent the given assertion. We claim that $f(x) = x$ and $f(x) = \frac 1x$ are the only solutions, it is
+  easy to check that these work. \newline \newline
+  First, note
+  \[
+  P(x, x, x, x) \Longrightarrow \frac{f(x)^2}{f(x^2)} = 1 \implies f(x^2) = f(x)^2
+  \]
+  Which also gives $f(1) = 1$. Further,
+  \[
+  P(x, x, \sqrt x, \sqrt x) \Longrightarrow \frac{f(x)^2}{f(x)} = x \implies f(x) = x
+  \]
+  We reject $f \equiv 0$ in the quadratic as it is obviously not a viable solution.
 \end{proof}
 
 \end{document}
