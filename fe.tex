@@ -209,6 +209,13 @@
   P(x, 1, \sqrt x, \sqrt x) \Longrightarrow (f(x)-x)(xf(x)-1) = 0
   \]
   Which gives us that $f(x) = x$ or $\frac 1x$. However, we now need to prove that $f$ is not a piecewise function.
+  \newline \newline
+  We assume $f(a) = a$ and $f(b) = \frac 1b$ for some distinct $a$, $b$. We note:
+  \[
+  P(\sqrt a, \sqrt b, \sqrt{ab}, 1) \Longrightarrow \frac{a+\frac 1b}{f(ab) + 1} = \frac{a+b}{ab + 1}
+  \]
+  If we take $f(ab) = ab$, we get $b=1$ and the case where $f(ab) = \frac{1}{ab}$ goves $a=1$, contradicting that $a$ and $b$ are distinct.
+  Thus, $f$ is not piecewise, and the only solutions are $f(x) = x$ and $f(x) = \frac 1x$ for all $x \in \mathbb{R}^+$.
 \end{proof}
 
 \end{document}
