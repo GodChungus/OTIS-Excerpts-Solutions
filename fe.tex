@@ -5,7 +5,7 @@
 \begin{document}
 \title{Functional Equations Solutions}
 \author{Prakrit Gajurel}
-\date{5 July 2026}
+\date{6 July 2026}
 \maketitle
 
 \section{Walkthrough Problems}
@@ -208,7 +208,7 @@
   \[
   P(x, 1, \sqrt x, \sqrt x) \Longrightarrow (f(x)-x)(xf(x)-1) = 0
   \]
-  Which gives us that $f(x) = x$ or $\frac 1x$. However, as $f$ could be a piecewise function, we prove the nonexistence of one.
+  Which gives us that $f(x) = x$ or $\frac 1x$. However, as $f$ could be a piecewise function, we prove the nonexistence of one.o
   \newline \newline
   We assume $f(a) = a$ and $f(b) = \frac 1b$ for some distinct $a$, $b$. We note:
   \[
@@ -216,6 +216,31 @@
   \]
   If we take $f(ab) = ab$, we get $b=1$ and the case where $f(ab) = \frac{1}{ab}$ goves $a=1$, contradicting that $a$ and $b$ are distinct.
   Thus, $f$ is not piecewise, and the only solutions are $f(x) = x$ and $f(x) = \frac 1x$ for all $x \in \mathbb{R}^+$.
+\end{proof}
+
+\begin{problem}
+  [IMO 2010]
+  Find all functions $f: \mathbb{R} \rightarrow \mathbb{R}$ such that for all $x$, $y \in \mathbb{R}$,
+  \[
+  f(\lfloor x \rfloor y) = f(x) \lfloor f(y) \rfloor
+  \]
+\end{problem}
+
+\begin{proof}
+  Let $P(x, y)$ denote the given assertion. Note that
+  \[
+  P(0, 0) \Longrightarrow f(0) = f(0) \lfloor f(0) \rfloor
+  \]
+  From which we get that either $f(0) = 0$, or $1 \le f(0) < 2$, more specifically we get $\lfloor f(0) \rfloor = 1$. We now
+  consider cases.
+  \newline \newline
+  $\boxed{\textbf{CASE 1.}}$ $f(0) = 0$
+  Let some $x$ be such that $0 < x < 1$, then the original equation becomes:
+  \[
+  f(x) \lfloor f(y) \rfloor = 0
+  \]
+  Which gives us either $\lfloor f(y) \rfloor = 0$ or $f(x) = 0$ for all $0<x<1$. For the first case, consider now
+  $P(1, y)$ giving us $f(y) = 0$ for all $y$.
 \end{proof}
 
 \end{document}
