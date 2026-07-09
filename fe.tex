@@ -5,7 +5,7 @@
 \begin{document}
 \title{Functional Equations Solutions}
 \author{Prakrit Gajurel}
-\date{6 July 2026}
+\date{9 July 2026}
 \maketitle
 
 \section{Walkthrough Problems}
@@ -241,6 +241,49 @@
   \]
   Which gives us either $\lfloor f(y) \rfloor = 0$ or $f(x) = 0$ for all $0<x<1$. For the first case, consider now
   $P(1, y)$ giving us $f(y) = 0$ for all $y$.
+\end{proof}\
+
+\begin{problem}
+  [IMO 2009]
+  Find all functions $f: \mathbb{Z}_{>0} \rightarrow \mathbb{Z}_{>0}$ such that for positive integers $a$ and $b$, the numbers
+  \[
+  a, \qquad f(b), \qquad, f(b+f(a)-1)
+  \]
+  are the sides of a non-degenerate triangle.
+\end{problem}
+
+\begin{proof}
+  We prove something that will be crucial.
+  \begin{claim}
+    If $1$, $a$, $b$ are sides of a triangle where $a$, $b \in \mathbb{Z}_{>0}$, then $a=b$.
+    \begin{proof}
+      By the triangle inequality,
+      \[
+      b < a + 1
+      \]
+      \[
+      a < 1 + b
+      \]
+      Combining gives us $-1 < a-b < 1$. Since $a$, $b$ are positive integers, we get that $a-b=0 \implies a=b$.
+    \end{proof}
+  \end{claim}
+  Let $P(a, b)$ denote the tuple $(a, f(b), f(b+f(a)-1))$. Then,
+  \[
+  P(1, b) \Longrightarrow (1, f(b), f(b+f(1)-1))
+  \]
+  From our above claim, we get that $f(b) = f(b+f(1)-1)$, so $f(1) \neq 1 \implies $$f$ is periodic, and takes on finitely many values. 
+  Note that this also means $f$ has a maximum(again, if and only if $f(1) \neq 1$).
+  \begin{claim}
+    $f(1) = 1$.
+    \begin{proof}
+      We proceed by contradiction, assume not, then obviously $f(1) > 1$. We choose a sufficiently large $a$ for
+      $P(a, b)$, then by the triangle inequality,
+      \[
+      a < f(b+f(a)-1) - f(b)
+      \]
+      Which would hold false.
+    \end{proof}
+  \end{claim}
 \end{proof}
 
 \end{document}
