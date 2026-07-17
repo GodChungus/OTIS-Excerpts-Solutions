@@ -18,7 +18,7 @@
 
 - 📄 Every solution is written in **LaTeX**.
 - 📕 A compiled PDF is provided along with the files, with the same file name.
-- 🔄 This repository will be updated as I go through the book.
+- 🔄 This repository will be updated as I go through the problems in the book.
 
 ---
 
