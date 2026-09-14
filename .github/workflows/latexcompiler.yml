@@ -1,0 +1,172 @@
+name: Compile All LaTeX Documents
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+concurrency:
+  group: latex-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compile-latex:
+    runs-on: ubuntu-latest
+    container: texlive/texlive:latest
+    outputs:
+      compiled: ${{ steps.compile.outputs.compiled }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Find and compile all .tex files
+        id: compile
+        shell: bash
+        run: |
+          # Only compile root documents (files with \documentclass), not sub-files
+          mapfile -t tex_files < <(grep -rl '\\documentclass' . --include="*.tex" | sed 's|^\./||' | sort)
+
+          total=${#tex_files[@]}
+          echo "Found $total .tex files"
+
+          if [ "$total" -eq 0 ]; then
+            echo "compiled=0" >> $GITHUB_OUTPUT
+            echo "failed=0"   >> $GITHUB_OUTPUT
+            echo "total=0"    >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          compiled=0
+          failed=0
+          failed_files=""
+
+          for tex_file in "${tex_files[@]}"; do
+            dir_name=$(dirname "$tex_file")
+            base_name=$(basename "$tex_file" .tex)
+
+            echo ""
+            echo "========================================="
+            echo "Compiling: $tex_file"
+            echo "========================================="
+
+            cd "$GITHUB_WORKSPACE/$dir_name"
+
+            if latexmk -pdf -interaction=nonstopmode -halt-on-error "$base_name.tex" 2>&1; then
+              if [ -f "$base_name.pdf" ]; then
+                echo "✅ $tex_file → OK"
+                compiled=$((compiled + 1))
+              else
+                echo "❌ $tex_file → PDF not generated"
+                failed=$((failed + 1))
+                failed_files="$failed_files\n- $tex_file"
+              fi
+            else
+              echo "❌ $tex_file → Compilation error"
+              failed=$((failed + 1))
+              failed_files="$failed_files\n- $tex_file"
+            fi
+
+            cd "$GITHUB_WORKSPACE"
+          done
+
+          echo "compiled=$compiled" >> $GITHUB_OUTPUT
+          echo "failed=$failed"     >> $GITHUB_OUTPUT
+          echo "total=$total"       >> $GITHUB_OUTPUT
+
+          [ -n "$failed_files" ] && echo -e "$failed_files" > /tmp/failed_files.txt
+
+          true  # never fail the job — partial success is still success
+
+      - name: Collect all PDFs
+        if: steps.compile.outputs.compiled != '0'
+        run: |
+          mkdir -p collected-pdfs
+          find . -name "*.pdf" \
+            -not -path "./collected-pdfs/*" \
+            -not -path "./.git/*" \
+            -type f | while read pdf; do
+              rel="${pdf#./}"
+              mkdir -p "collected-pdfs/$(dirname "$rel")"
+              cp "$pdf" "collected-pdfs/$rel"
+          done
+
+      - name: Upload all PDFs as single artifact
+        if: steps.compile.outputs.compiled != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-pdfs-${{ github.run_number }}
+          path: collected-pdfs/
+          retention-days: 30
+
+      - name: Compilation Summary
+        if: always()
+        run: |
+          compiled="${{ steps.compile.outputs.compiled }}"
+          failed="${{ steps.compile.outputs.failed }}"
+          total="${{ steps.compile.outputs.total }}"
+
+          echo "## 📊 LaTeX Compilation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${total:-0}" -eq 0 ]; then
+            echo "No .tex files found in repository." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Files found | $total |" >> $GITHUB_STEP_SUMMARY
+            echo "| ✅ Compiled | $compiled |" >> $GITHUB_STEP_SUMMARY
+            echo "| ❌ Failed   | $failed |"  >> $GITHUB_STEP_SUMMARY
+
+            if [ -f /tmp/failed_files.txt ]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "### Files with errors:" >> $GITHUB_STEP_SUMMARY
+              cat /tmp/failed_files.txt >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
+
+  commit-pdfs:
+    needs: compile-latex
+    runs-on: ubuntu-latest
+    if: >-
+      always() &&
+      needs.compile-latex.result == 'success' &&
+      needs.compile-latex.outputs.compiled != '0' &&
+      github.event_name == 'push' &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Download compiled PDFs
+        uses: actions/download-artifact@v4
+        with:
+          name: compiled-pdfs-${{ github.run_number }}
+          path: downloaded-pdfs
+
+      - name: Move PDFs to original locations and commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+          find downloaded-pdfs -name "*.pdf" -type f | while read pdf_path; do
+            rel_path="${pdf_path#downloaded-pdfs/}"
+            mkdir -p "$(dirname "$rel_path")"
+            cp "$pdf_path" "$rel_path"
+            git add "$rel_path"
+          done
+
+          if ! git diff --staged --quiet; then
+            git commit -m "📄 Auto-update compiled PDFs [skip ci]"
+            git push
+            echo "✅ PDFs updated and pushed"
+          else
+            echo "ℹ️ No changes in PDFs"
+          fi
