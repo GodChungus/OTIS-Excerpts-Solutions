@@ -1,0 +1,52 @@
+\documentclass[11pt]{scrartcl}
+\usepackage[sexy]{evan}
+\usepackage{answers}
+
+\begin{document}
+\title{Orders Solutions}
+\author{Prakrit Gajurel}
+\date{\today}
+\maketitle
+
+\section{Walkthrough Problems}
+
+\begin{problem}
+    Find all integers $n \ge 1$ such that $n$ divides $2^n - 1$.
+\end{problem}
+
+\begin{proof}
+    We show that the answer is $n=1$ only. For the sake of contradiction, assume that some $n > 1$ works.
+    Throughout this proof, $p$ represents an arbitrary prime number. Consider now any $p \mid n$.
+    \begin{claim}
+        $p \neq 2$
+    \end{claim}
+    \begin{proof}
+        Obvious, as $p = 2 \implies 2 \mid n \mid 2^n - 1$ which is a contradiction.
+    \end{proof}
+
+    \begin{claim}
+        If $p \mid n$, then $\text{ord}_p 2 \mid \gcd(n, p-1)$.
+    \end{claim}
+    \begin{proof}
+        Since $p \mid n \mid 2^n - 1$, we get $2^n \equiv 1 \pmod{p}$ and so $\text{ord}_p 2 \mid n$. Moreover,
+        Fermat gives $2^{p-1} \equiv 1 \pmod{p}$, so $\text{ord}_p 2 \mid p-1$ and the desired result follows.
+    \end{proof}
+
+    \begin{claim}
+        For any $n \in \mathbb{Z}_{\ge 2}$, there exists a $p \mid n$ such that $\gcd(n, p-1) = 1$.
+    \end{claim}
+    \begin{proof}
+        Choosing the smallest $p \mid n$ works(where $p$ can be $2$, for even $n$).
+    \end{proof}
+
+    \begin{claim}
+        $\text{ord}_p 2 = 1$
+    \end{claim}
+    \begin{proof}
+        Just choose the smallest $p \mid n$ which forces this.
+    \end{proof}
+
+    All of the above gives us that $2 \equiv 1 \pmod{p}$, which is a contradiction. Thus, $n=1$ is the only solution.
+\end{proof}
+
+\end{document}
