@@ -18,6 +18,7 @@
 
 - 📄 Every solution is written in **LaTeX**.
 - 📕 A compiled PDF is provided along with the files, with the same file name.
+- 😎 In case you want to compile the files yourself, make sure to have the **evan.sty** file downloaded in the same folder.
 - 🔄 This repository will be updated as I go through the problems in the book.
 
 ---
